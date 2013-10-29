@@ -47,8 +47,10 @@ class Board:
             else:
                 return -1
         else:
-            value, move = self.create_children()
-            return value
+            moves = self.get_moves()
+            values = [child.get_value() for child in moves.values()]
+
+        return max(values) if self.get_player() == 'X' else min(values)
 
     def get_first_blank_space(self):
         for r in range(len(self.board)):
@@ -58,25 +60,19 @@ class Board:
         raise ValueError("no moves left")
 
     def get_best_move(self):
-        value, move = self.create_children()
-        if move is None:
-            move = self.get_first_blank_space()
-        return move
+        moves = self.get_moves()
+        key = lambda m: moves[m].get_value()
+        return max(moves, key=key) if self.get_player() == 'X' else min(moves, key=key)
 
-    def create_children(self):
-        player = self.get_player()
-        children_values = []
+    def get_moves(self):
+        moves = {}
         for row in range(len(self.board)):
             for col in range(len(self.board)):
                 if self.board[row][col] == ' ':
                     child = Board()
                     child.set_board([r[:] for r in self.board])
                     child.set_spot(row, col)
-                    children_values.append([child.get_value(), (row, col)])
-        if not children_values:
-            return [0, None]
-
-        return max(children_values) if player == 'X' else min(children_values)
+                    moves[row, col] = child
 
     def three_same(self, ls):
         a, b, c = ls
