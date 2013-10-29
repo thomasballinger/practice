@@ -1,8 +1,6 @@
 class Board:
     def __init__(self):
         self.board = [[' ' for col in range(3)] for row in range(3)]
-        self.value = None
-        self.move = None
 
     def __str__(self):
         board = ''
@@ -15,7 +13,6 @@ class Board:
 
     def set_board(self, board):
         self.board = board
-        self.value = None
 
     def is_finished(self):
         return self.check_three_same() is not None or self.is_full()
@@ -26,11 +23,6 @@ class Board:
                 if i == ' ':
                     return False
         return True
-
-    def get_value(self):
-        if not self.value:
-            self.set_value()
-        return self.value
 
     def set_spot(self, row, col):
         if self.board[row][col] == ' ':
@@ -47,15 +39,16 @@ class Board:
                     turns += 1
         return 'X' if turns%2 == 0 else 'O'
 
-    def set_value(self):
+    def get_value(self):
         winner = self.check_three_same()
         if winner:
             if winner == 'X':
-                self.value = 1
+                return 1
             else:
-                self.value = -1
+                return -1
         else:
-            self.value, self.move = self.create_children()
+            value, move = self.create_children()
+            return value
 
 
     def make_move(self):
@@ -76,7 +69,6 @@ class Board:
             self.set_spot(self.move[0], self.move[1])
 
         self.move = None
-        self.value = None
 
         print self
 
@@ -134,15 +126,26 @@ def play_game():
 
 if __name__ == '__main__':
     board = Board()
+    X = 'X'
+    O = 'O'
+    _ = ' '
 
-    #print board.get_value()
-    #board.set_board([['X',' ','X'],['O',' ','O'],['X', 'O', ' ']])
-    #print board.get_value()
-    #board.set_board([['X',' ','X'],['O',' ','O'],['X', ' ', ' ']])
-    #print board.get_value()
+    board.set_board([[X,_,X],
+                     [O,_,O],
+                     [X,O,_]])
+    assert board.get_value() == 1
 
-    #board.set_board([['X',' ','X'],['O','O','O'],['X', 'O', 'O']])
-    #print board.get_value()
+    board.set_board([[X,_,X],
+                     [O,_,O],
+                     [X,_,_]])
+    assert board.get_value() == -1
+
+    board.set_board([[X,_,X],
+                     [O,O,O],
+                     [X,O,O]])
+    assert board.get_value() == -1
+
+
 
 
 
