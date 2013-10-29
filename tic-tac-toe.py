@@ -50,27 +50,30 @@ class Board:
             value, move = self.create_children()
             return value
 
+    def get_first_blank_space(self):
+        for r in range(len(self.board)):
+            for c in range(len(self.board)):
+                if self.board[r][c] == ' ':
+                    return r, c
+        raise ValueError("no moves left")
 
     def make_move(self):
+        """Returns None if game finished, or makes the move at row, col"""
+
         if self.is_finished():
             print self
             return
 
-        if not self.move:
-            found = False
-            for r in range(len(self.board)):
-                for c in range(len(self.board)):
-                    if self.set_spot(r, c):
-                        found = True
-                        break
-                if found:
-                    break
-        else:
-            self.set_spot(self.move[0], self.move[1])
 
-        self.move = None
+        self.set_spot(self.move[0], self.move[1])
 
-        print self
+        print
+
+    def get_best_move(self):
+        value, move = self.create_children()
+        if move is None:
+            move = self.get_first_blank_space()
+        return move
 
     def create_children(self):
         player = self.get_player()
@@ -116,11 +119,10 @@ def play_game():
         if board.get_player() == 'X':
             row = input("Enter row: ")
             col = input("Enter col: ")
-            board.move = (row, col)
-            board.make_move()
+            board.make_move(row, col)
         else:
-            board.get_value()
-            board.make_move()
+            row, col = board.get_best_move()
+            board.make_move(row, col)
 
     print "Game Over!"
 
