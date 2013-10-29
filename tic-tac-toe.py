@@ -3,7 +3,6 @@ class Board:
         self.board = [[' ' for col in range(3)] for row in range(3)]
         self.value = None
         self.move = None
-        self.finished = False
 
     def __str__(self):
         board = ''
@@ -19,7 +18,14 @@ class Board:
         self.value = None
 
     def is_finished(self):
-        return self.check_three_same() is not None
+        return self.check_three_same() is not None or self.is_full()
+
+    def is_full(self):
+        for row in self.board:
+            for i in row:
+                if i == ' ':
+                    return False
+        return True
 
     def get_value(self):
         if not self.value:
