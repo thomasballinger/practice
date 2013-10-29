@@ -56,8 +56,8 @@ class Board:
                 self.value = -1
         else:
             self.value, self.move = self.create_children()
-                
-    
+
+
     def make_move(self):
         if self.is_finished():
             print self
@@ -119,18 +119,7 @@ class Board:
 
         return successful_player
 
-if __name__ == '__main__':
-    board = Board()
-
-    #print board.get_value()
-    #board.set_board([['X',' ','X'],['O',' ','O'],['X', 'O', ' ']])
-    #print board.get_value()
-    #board.set_board([['X',' ','X'],['O',' ','O'],['X', ' ', ' ']])
-    #print board.get_value()
-
-    #board.set_board([['X',' ','X'],['O','O','O'],['X', 'O', 'O']])
-    #print board.get_value()
-    
+def play_game():
     while not board.is_finished():
         if board.get_player() == 'X':
             row = input("Enter row: ")
@@ -142,3 +131,18 @@ if __name__ == '__main__':
             board.make_move()
 
     print "Game Over!"
+
+if __name__ == '__main__':
+    board = Board()
+
+    #print board.get_value()
+    #board.set_board([['X',' ','X'],['O',' ','O'],['X', 'O', ' ']])
+    #print board.get_value()
+    #board.set_board([['X',' ','X'],['O',' ','O'],['X', ' ', ' ']])
+    #print board.get_value()
+
+    #board.set_board([['X',' ','X'],['O','O','O'],['X', 'O', 'O']])
+    #print board.get_value()
+
+
+
