@@ -57,17 +57,13 @@ class Board:
                     return r, c
         raise ValueError("no moves left")
 
-    def make_move(self):
+    def make_move(self, row, col):
         """Returns None if game finished, or makes the move at row, col"""
 
         if self.is_finished():
-            print self
             return
 
-
-        self.set_spot(self.move[0], self.move[1])
-
-        print
+        self.set_spot(row, col)
 
     def get_best_move(self):
         value, move = self.create_children()
@@ -115,6 +111,7 @@ class Board:
         return successful_player
 
 def play_game():
+    board = Board()
     while not board.is_finished():
         if board.get_player() == 'X':
             row = input("Enter row: ")
@@ -123,6 +120,7 @@ def play_game():
         else:
             row, col = board.get_best_move()
             board.make_move(row, col)
+        print board
 
     print "Game Over!"
 
@@ -147,7 +145,7 @@ if __name__ == '__main__':
                      [X,O,O]])
     assert board.get_value() == -1
 
-
+    play_game()
 
 
 
