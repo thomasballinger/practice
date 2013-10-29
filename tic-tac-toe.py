@@ -1,4 +1,5 @@
 class Board:
+    value_cache = {}
     def __init__(self):
         self.board = [[' ' for col in range(3)] for row in range(3)]
 
@@ -46,11 +47,19 @@ class Board:
                 return 1
             else:
                 return -1
+        elif self.is_full():
+            return 0
         else:
-            moves = self.get_moves()
-            values = [child.get_value() for child in moves.values()]
-
-        return max(values) if self.get_player() == 'X' else min(values)
+            s = str(self)
+            if s in self.value_cache:
+                print 'getting cached value!!!'
+                return self.value_cache[s]
+            else:
+                boards = self.get_boards()
+                values = [child.get_value() for child in boards]
+                value = max(values) if self.get_player() == 'X' else min(values)
+                self.value_cache[s] = value
+                return value
 
     def get_first_blank_space(self):
         for r in range(len(self.board)):
@@ -71,8 +80,12 @@ class Board:
                 if self.board[row][col] == ' ':
                     child = Board()
                     child.set_board([r[:] for r in self.board])
-                    child.set_spot(row, col)
+                    child.make_move(row, col)
                     moves[row, col] = child
+        return moves
+
+    def get_boards(self):
+        return self.get_moves().values()
 
     def three_same(self, ls):
         a, b, c = ls
