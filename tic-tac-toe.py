@@ -24,7 +24,7 @@ class Board:
                     return False
         return True
 
-    def set_spot(self, row, col):
+    def make_move(self, row, col):
         if self.board[row][col] == ' ':
             self.board[row][col] = self.get_player()
             return True
@@ -56,10 +56,6 @@ class Board:
                 if self.board[r][c] == ' ':
                     return r, c
         raise ValueError("no moves left")
-
-    def make_move(self, row, col):
-        """Returns None if game finished, or makes the move at row, col"""
-        self.set_spot(row, col)
 
     def get_best_move(self):
         value, move = self.create_children()
