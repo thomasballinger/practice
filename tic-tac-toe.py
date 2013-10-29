@@ -59,10 +59,6 @@ class Board:
 
     def make_move(self, row, col):
         """Returns None if game finished, or makes the move at row, col"""
-
-        if self.is_finished():
-            return
-
         self.set_spot(row, col)
 
     def get_best_move(self):
@@ -95,7 +91,7 @@ class Board:
                 return a
         else:
             return None
-    
+
     def check_three_same(self):
         size = len(self.board)
         size_range = range(size)
@@ -119,6 +115,7 @@ def play_game():
             board.make_move(row, col)
         else:
             row, col = board.get_best_move()
+            print 'want to go', row, col
             board.make_move(row, col)
         print board
 
@@ -145,7 +142,9 @@ if __name__ == '__main__':
                      [X,O,O]])
     assert board.get_value() == -1
 
+    board.set_board([[X,_,_],
+                     [_,_,_],
+                     [_,_,_]])
+    assert board.get_best_move() == (1,1), 'got %r instead' % (board.get_best_move(),)
+
     play_game()
-
-
-
